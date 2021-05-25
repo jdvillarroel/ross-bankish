@@ -1,14 +1,22 @@
 <template>
-  <Home />
+  <Header />
+  <Links />
+  <router-view />
 </template>
 
 <script>
 import Home from "./views/Home.vue"
+import Instructions from "./views/Instructions.vue"
+import Header from "./components/Header.vue"
+import Links from "./components/Links.vue"
 
 export default {
   
   components: {
-    Home
+    Home,
+    Instructions,
+    Header,
+    Links
   }
 }
 </script>

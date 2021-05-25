@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;600;700&display=swap");
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #f0f0f0;
+	font-family: "Montserrat Alternates", sans-serif;
+	color: rgb(53, 53, 53);
+}
+
+.router-link-active {
+	background-color: rgb(54, 187, 154);
+	font-weight: 600;
+	color: white !important;
+}
+
+/* **************** HEADER STYLES ******************* */
+header {
+	background-color: rgb(54, 187, 154);
+}
+
+.header-container {
+	color: white;
+	max-width: 1440px;
+	width: 90%;
+	margin: auto;
+	padding: 1rem 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.logo-container {
+	display: flex;
+	align-items: center;
+}
+
+.logo-container h2 {
+	margin-left: 0.5rem;
+}
+
+.menu {
+	cursor: pointer;
+}
+
+.actions {
+	width: 70%;
+	margin: auto;
+	text-align: center;
+}
+
+.actions li {
+	list-style: none;
+	padding: 0.3rem;
+	color: white;
+}
+
+/* **************** HOME STYLES ******************* */

@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    Home view
+    <div class="container">
+      <h1>Bienvenid@</h1>
+    </div>
   </div>
 </template>
 
@@ -8,9 +10,14 @@
 // @ is an alias to /src
 
 export default {
-  name: 'Home',
-  components: {
-    
-  }
+  name: 'Home'
 }
 </script>
+
+<style>
+  .container {
+    width: 90%;
+    margin: 1rem auto;
+    text-align: center;
+  }
+</style>
