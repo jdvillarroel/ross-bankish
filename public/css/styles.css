@@ -10,6 +10,7 @@ body {
 	background-color: #f0f0f0;
 	font-family: "Montserrat Alternates", sans-serif;
 	color: rgb(53, 53, 53);
+	line-height: 1.5;
 }
 
 .router-link-active {
@@ -40,7 +41,7 @@ header {
 }
 
 .logo-container h2 {
-	margin-left: 0.5rem;
+	margin-left: 0.4rem;
 }
 
 .menu {
@@ -59,4 +60,76 @@ header {
 	color: white;
 }
 
-/* **************** HOME STYLES ******************* */
+/* **************** FORM STYLES ******************* */
+.backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.2);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.form-row {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 1rem 2rem;
+}
+
+.modal {
+	width: 80%;
+	max-width: 35rem;
+	background-color: white;
+	border-radius: 10px;
+}
+
+input {
+	width: 100%;
+	height: 2rem;
+	border: none;
+	border-bottom: 1px solid rgba(53, 53, 53, 0.5);
+	line-height: 1.5;
+	font-family: "Montserrat Alternates", sans-serif;
+	padding: 0.1rem 0.2rem;
+}
+
+input:focus {
+	outline-color: rgba(53, 53, 53, 0.5);
+}
+
+.form-message {
+	font-size: 0.7rem;
+	margin-top: 0.2rem;
+}
+
+.btn-container {
+	padding: 1rem 2rem;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+button {
+	border: 1px solid rgb(54, 187, 154);
+	border-radius: 5px;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+button[type="submit"] {
+	background-color: rgb(54, 187, 154);
+	margin-left: 1rem;
+	color: white;
+}
+
+button[type="reset"] {
+	background-color: white;
+	margin-left: 1rem;
+	padding: 0.5rem 1rem;
+	color: rgb(54, 187, 154);
+}
