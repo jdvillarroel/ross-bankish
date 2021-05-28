@@ -34,27 +34,23 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 
 export default {
-  setup() {
-    // *********** Data ****************//
-    let isPassword = ref(true)
-    let fName = ref("")
-    let lName = ref("")
-    let email = ref("")
-    let password = ref("")
-    let passType = ref("password")
-
-    // *********** Methods **************** //
-    const togglePasswordType = () => {
-      isPassword.value = !isPassword.value
-
-      passType.value = isPassword.value ? "password" : "text"
-      console.log(passType.value)
+  data() {
+    return {
+      fName: "",
+      lName: "",
+      email: "",
+      password: "",
+      passType: "password"
     }
+  },
 
-    return { isPassword, togglePasswordType, fName, lName, email, password, passType }
+  methods: {
+    // Toggle password input type between password and text
+    togglePasswordType() {
+      this.passType = this.passType === "text" ? "password" : "text"
+    }
   }
 }
 </script>

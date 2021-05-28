@@ -1,7 +1,7 @@
 <template>
-  <Header />
+  <Header @show-modal="showModal"/>
   <Links />
-  <router-view />
+  <router-view :showForm="showForm"/>
 </template>
 
 <script>
@@ -17,6 +17,18 @@ export default {
     Instructions,
     Header,
     Links
+  },
+
+  data() {
+    return {
+      showForm: ""
+    }
+  },
+
+  methods: {
+    showModal(payload) {
+      this.showForm = payload
+    }
   }
 }
 </script>

@@ -2,7 +2,7 @@
   <div class="home">
     <div class="container">
       <h1>Bienvenid@</h1>
-      <Register />
+      <Register v-show="showForm == 'register'" />
     </div>
   </div>
 </template>
@@ -16,7 +16,22 @@ export default {
 
   components: {
     Register
+  },
+
+  props: [
+    "showForm"
+  ],
+
+  data() {
+    return {
+      
+    }
+  },
+
+  methods: {
+
   }
+
 }
 </script>
 

@@ -13,28 +13,43 @@
     </div>
 
     <ul v-if="isMenuOpen" class="actions">
-      <li>Ingresar</li>
-      <li>Salir</li>
-      <li>Registrarse</li>
+      <li @click="login">Ingresar</li>
+      <li @click="logout">Salir</li>
+      <li @click="register">Registrarse</li>
     </ul>
   </header>
 </template>
 
 <script>
-import { ref } from "vue"
 
 export default {
-  setup() {
-    let isMenuOpen = ref(false)
+  emits: [
+    "show-modal"
+  ],
 
-    // Toggle menu icon.
-    const toggleMenu = () => {
-      isMenuOpen.value = !isMenuOpen.value
+  data() {
+    return {
+      isMenuOpen: false
     }
+  },
 
-    return {isMenuOpen, toggleMenu}
+  methods: {
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen
+    },
+
+    login() {
+      console.log("login selected")
+    },
+
+    logout() {
+      console.log("logout selected")
+    },
+
+    register() {
+      this.$emit("show-modal", "register")
+    }
   }
-
 }
 </script>
 
