@@ -2,20 +2,23 @@
   <div class="home">
     <div class="container">
       <h1>Bienvenid@</h1>
-      <Register v-show="showForm == 'register'" />
+      <RegisterForm v-show="showForm === 'register'" @close-modal="closeModal" />      
+      <LoginForm v-show="showForm === 'login'" @close-modal="closeModal" />      
     </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Register from "../components/Register.vue"
+import RegisterForm from "../components/RegisterForm.vue"
+import LoginForm from "../components/LoginForm.vue"
 
 export default {
   name: 'Home',
 
   components: {
-    Register
+    RegisterForm,
+    LoginForm
   },
 
   props: [
@@ -29,7 +32,10 @@ export default {
   },
 
   methods: {
-
+    // Close register or login form.
+    closeModal() {
+      this.$emit("close-modal", "")
+    }
   }
 
 }

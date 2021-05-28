@@ -39,7 +39,7 @@ export default {
     },
 
     login() {
-      console.log("login selected")
+      this.$emit("show-modal", "login")
     },
 
     logout() {

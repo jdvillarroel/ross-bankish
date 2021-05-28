@@ -1,7 +1,7 @@
 <template>
   <Header @show-modal="showModal"/>
   <Links />
-  <router-view :showForm="showForm"/>
+  <router-view :showForm="showForm" @close-modal="showModal"/>
 </template>
 
 <script>

@@ -1,7 +1,7 @@
 <template>
-  <div class="backdrop">
+  <div class="backdrop" @click.self="closeRegisterForm">
     <div class="modal">
-      <form>
+      <form @submit.prevent="registerUser">
         <div class="form-row">
           <label for="fName">Nombre</label>
           <input type="text" id="fName" required v-model="fName">
@@ -50,6 +50,14 @@ export default {
     // Toggle password input type between password and text
     togglePasswordType() {
       this.passType = this.passType === "text" ? "password" : "text"
+    },
+
+    closeRegisterForm() {
+      this.$emit("close-modal")
+    },
+
+    registerUser() {
+      console.log("Register clicked")
     }
   }
 }
