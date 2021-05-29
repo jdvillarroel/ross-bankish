@@ -2,8 +2,9 @@
   <div class="home">
     <div class="container">
       <h1>Bienvenid@</h1>
-      <RegisterForm v-show="showForm === 'register'" @close-modal="closeModal" />      
-      <LoginForm v-show="showForm === 'login'" @close-modal="closeModal" />      
+      <p v-if="user">Usuario Actual: {{ user.email }}</p>
+      <RegisterForm v-if="showForm === 'register'" @close-modal="closeModal" @user-created="userCreated" />      
+      <LoginForm v-if="showForm === 'login'" @close-modal="closeModal" @user-logged-in="userLoggedIn" />      
     </div>
   </div>
 </template>
@@ -12,6 +13,7 @@
 // @ is an alias to /src
 import RegisterForm from "../components/RegisterForm.vue"
 import LoginForm from "../components/LoginForm.vue"
+import * as fb from "@/firebase"
 
 export default {
   name: 'Home',
@@ -27,7 +29,7 @@ export default {
 
   data() {
     return {
-      
+      user: null
     }
   },
 
@@ -35,7 +37,37 @@ export default {
     // Close register or login form.
     closeModal() {
       this.$emit("close-modal", "")
+    },
+
+    userCreated(user) {
+      this.user = user
+      this.closeModal()
+    },
+
+    userLoggedIn(user) {
+      this.user = user
+      this.closeModal()
     }
+  },
+
+  mounted() {
+    fb.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.user = user
+      } else {
+        this.user = null
+      }
+    })
+  },
+
+  updated() {
+    fb.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.user = user
+      } else {
+        this.user = null
+      }
+    })
   }
 
 }

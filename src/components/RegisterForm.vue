@@ -21,6 +21,7 @@
           <label for="password">Password</label>
           <input :type="passType" id="password" required v-model="password" >
           <p class="form-message" @click="togglePasswordType">Show/hide password</p>
+          <p class="error-message">{{ errorMessage }}</p>
         </div>
         
         <div class="btn-container">
@@ -34,6 +35,7 @@
 </template>
 
 <script>
+import * as fb from "@/firebase"
 
 export default {
   data() {
@@ -42,7 +44,20 @@ export default {
       lName: "",
       email: "",
       password: "",
-      passType: "password"
+      passType: "password",
+      //user: null,
+      errorMessage: ""
+    }
+  },
+
+  computed: {
+    userData() {
+      return {
+        email: this.email,
+        password: this.password,
+        firstName: this.fName,
+        lastName: this.lName
+      }
     }
   },
 
@@ -57,7 +72,20 @@ export default {
     },
 
     registerUser() {
-      console.log("Register clicked")
+      // Create user in firebase.
+      fb.createUser(this.userData)
+      .then(user => {
+        // this.user = user
+        this.fName = ""
+        this.lName = ""
+        this.email = ""
+        this.password = ""
+
+        this.$emit("user-created", user)
+      })
+      .catch(err => {
+        this.errorMessage = err.message
+      })
     }
   }
 }

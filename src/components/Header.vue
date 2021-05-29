@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import * as fb from "@/firebase"
 
 export default {
   emits: [
@@ -40,14 +41,17 @@ export default {
 
     login() {
       this.$emit("show-modal", "login")
+      setTimeout(this.toggleMenu, 1000)
     },
 
     logout() {
-      console.log("logout selected")
+      fb.logout()
+      setTimeout(this.toggleMenu, 1000)
     },
 
     register() {
       this.$emit("show-modal", "register")
+      setTimeout(this.toggleMenu, 1000)
     }
   }
 }
