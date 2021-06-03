@@ -35,57 +35,56 @@
 </template>
 
 <script>
-import * as fb from "@/firebase"
+import { ref, computed, onUnmounted } from 'vue'
 
 export default {
-  data() {
-    return {
-      fName: "",
-      lName: "",
-      email: "",
-      password: "",
-      passType: "password",
-      //user: null,
-      errorMessage: ""
-    }
-  },
+  emits: ["close-modal", "register-user"],
 
-  computed: {
-    userData() {
-      return {
-        email: this.email,
-        password: this.password,
-        firstName: this.fName,
-        lastName: this.lName
-      }
-    }
-  },
+  setup(props, context) {
+    const fName = ref("")
+    const lName = ref("")
+    const email = ref("")
+    const password = ref("")
+    const passType = ref("password")
+    const errorMessage = ref("")
 
-  methods: {
+    // ********** Computed properties *************** //
+    const userData = computed(() => {
+      return {firstName: fName.value, lastName: lName.value, email: email.value, password: password.value}
+    })
+
+    // ********** Methods ************ //
     // Toggle password input type between password and text
-    togglePasswordType() {
-      this.passType = this.passType === "text" ? "password" : "text"
-    },
+    const  togglePasswordType = () => {
+      passType.value = passType.value === "text" ? "password" : "text"
+    }
 
-    closeRegisterForm() {
-      this.$emit("close-modal")
-    },
+    const closeRegisterForm = () => {
+      context.emit("close-modal")
+    }
 
-    registerUser() {
-      // Create user in firebase.
-      fb.createUser(this.userData)
-      .then(user => {
-        // this.user = user
-        this.fName = ""
-        this.lName = ""
-        this.email = ""
-        this.password = ""
+    const registerUser = () => {
+      // Emit event to create user in firebase.
+      context.emit("register-user", userData.value)
+    }
 
-        this.$emit("user-created", user)
-      })
-      .catch(err => {
-        this.errorMessage = err.message
-      })
+    onUnmounted(() => {
+      fName.value = ""
+      lName.value = ""
+      email.value = ""
+      password.value = ""
+    })
+
+    return {
+      fName,
+      lName,
+      email,
+      password,
+      passType,
+      errorMessage,
+      togglePasswordType,
+      closeRegisterForm,
+      registerUser
     }
   }
 }

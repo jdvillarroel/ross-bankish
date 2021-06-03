@@ -1,7 +1,6 @@
 import firebase from "firebase/app"
 import "firebase/auth"
 import "firebase/firestore"
-import "firebase/storage"
 
 const firebaseConfig = {
   apiKey: "AIzaSyAGf4Ks-0wlwrr2cpwN4sh7bZXlwTaMG24",
@@ -16,9 +15,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // ************ Firebase References ********* //
-export const auth = firebase.auth();
-export const db = firebase.firestore();
-const storage = firebase.storage();
+const auth = firebase.auth();
+const db = firebase.firestore();
 
 const accountsRef = db.collection("accounts");
 const usersRef = db.collection("users");
@@ -26,27 +24,30 @@ const transactionsRef = db.collection("transactions");
 
 // Update firestore settings
 //db.settings({ timestampsInSnapshots: true });
+const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
 // *************** Functions ********************* //
 // Create user in firebase using email and password. Returns new user created.
-export const createUser = async (userInfo) => {
-  const userCredential = await auth.createUserWithEmailAndPassword(userInfo.email, userInfo.password);
-  const userAccount = await usersRef.doc(userCredential.user.uid).set({
-      firstName: userInfo.firstName,
-      lastName: userInfo.lastName,
-      email: userInfo.email,
-      createdAt: new Date()
-  });
+// export const createUser = async (userInfo) => {
+//   const userCredential = await auth.createUserWithEmailAndPassword(userInfo.email, userInfo.password);
+//   const userAccount = await usersRef.doc(userCredential.user.uid).set({
+//       firstName: userInfo.firstName,
+//       lastName: userInfo.lastName,
+//       email: userInfo.email,
+//       createdAt: new Date()
+//   });
   
-  return userCredential.user;
-}
+//   return userCredential.user;
+// }
 
-export const loginUser = async (userInfo) => {
-  const userLoggedIn = await auth.signInWithEmailAndPassword(userInfo.email, userInfo.password);
+// export const loginUser = async (userInfo) => {
+//   const userLoggedIn = await auth.signInWithEmailAndPassword(userInfo.email, userInfo.password);
 
-  return userLoggedIn;
-}
+//   return userLoggedIn;
+// }
 
-export const logout = () => {
-  auth.signOut();
-}
+// export const logout = () => {
+//   auth.signOut();
+// }
+
+export { auth, db, accountsRef, usersRef, transactionsRef, timestamp }

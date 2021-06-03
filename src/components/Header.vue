@@ -12,51 +12,60 @@
       </div>
     </div>
 
+    <transition name="nav-links">
     <ul v-if="isMenuOpen" class="actions">
-      <li @click="login">Ingresar</li>
-      <li @click="logout">Salir</li>
-      <li @click="register">Registrarse</li>
+      <li @click="loginUser">Ingresar</li>
+      <!-- <li @click="logoutUser">Salir</li> -->
+      <li @click="registerUser">Registrarse</li>
     </ul>
+    </transition>
   </header>
 </template>
 
 <script>
-import * as fb from "@/firebase"
+import { ref } from 'vue'
 
 export default {
   emits: [
     "show-modal"
   ],
 
-  data() {
-    return {
-      isMenuOpen: false
+  setup(props, context) {
+    const isMenuOpen = ref(false)
+
+    // *********** Methods ************ //
+    const toggleMenu = () => {
+      isMenuOpen.value = !isMenuOpen.value
     }
-  },
 
-  methods: {
-    toggleMenu() {
-      this.isMenuOpen = !this.isMenuOpen
-    },
-
-    login() {
-      this.$emit("show-modal", "login")
-      setTimeout(this.toggleMenu, 1000)
-    },
-
-    logout() {
-      fb.logout()
-      setTimeout(this.toggleMenu, 1000)
-    },
-
-    register() {
-      this.$emit("show-modal", "register")
-      setTimeout(this.toggleMenu, 1000)
+    const loginUser = () => {
+      context.emit("show-modal", "login")
+      setTimeout(toggleMenu, 1000)
     }
+
+    const registerUser = () => {
+      context.emit("show-modal", "register")
+      setTimeout(toggleMenu, 1000)
+    }
+
+    return { isMenuOpen, toggleMenu, loginUser, registerUser }
   }
 }
 </script>
 
 <style>
+  .nav-links-enter-from,
+  .nav-links-leave-to {
+    transform: translateY(-10rem);
+  }
 
+  .nav-links-enter-to,
+  .nav-links-leave-from {
+    transform: translateY(0);
+  }
+
+  .nav-links-enter-active,
+  .nav-links-leave-active {
+    transition: all 0.6s ease-in-out;
+  }
 </style>

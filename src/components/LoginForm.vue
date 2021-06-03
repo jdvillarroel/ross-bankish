@@ -26,45 +26,45 @@
 </template>
 
 <script>
-import * as fb from "@/firebase"
+import { ref, computed } from 'vue'
 
 export default {
-  data() {
+  emits: ["close-modal", "login-user"],
+
+  setup(props, context) {
+    const loginEmail = ref("")
+    const loginPassword = ref("")
+    const passType = ref("password")
+    const errorMessage = ref("")
+
+    // ********** Computed variables ************** //
+    const userData = computed(() => {
+      return {email: loginEmail.value, password: loginPassword.value}
+    })
+
+    // **************** Methods **************** //
+        // Toggle password input type between password and text
+    const togglePasswordType = () => {
+      passType.value = passType.value === "text" ? "password" : "text"
+    }
+
+    const closeLoginForm = () => {
+      context.emit("close-modal")
+    }
+
+    const loginUser = () => {
+      context.emit("login-user", userData.value)
+    }
+
     return {
-      loginEmail: "",
-      loginPassword: "",
-      passType: "password",
-      errorMessage: ""
-    }
-  },
-
-  computed: {
-    userData() {
-      return {
-        email: this.loginEmail,
-        password: this.loginPassword
-      }
-    }
-  },
-
-  methods: {
-    // Toggle password input type between password and text
-    togglePasswordType() {
-      this.passType = this.passType === "text" ? "password" : "text"
-    },
-
-    closeLoginForm() {
-      this.$emit("close-modal")
-    },
-
-    loginUser() {
-      fb.loginUser(this.userData)
-      .then(user => {
-        this.$emit("user-logged-in", user)
-      })
-      .catch(err => {
-        console.log(err.message)
-      })
+      loginEmail,
+      loginPassword,
+      passType,
+      errorMessage,
+      userData,
+      togglePasswordType,
+      closeLoginForm,
+      loginUser
     }
   }
 }

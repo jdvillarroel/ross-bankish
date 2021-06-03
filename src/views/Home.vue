@@ -2,18 +2,25 @@
   <div class="home">
     <div class="container">
       <h1>Bienvenid@</h1>
-      <p v-if="user">Usuario Actual: {{ user.email }}</p>
-      <RegisterForm v-if="showForm === 'register'" @close-modal="closeModal" @user-created="userCreated" />      
-      <LoginForm v-if="showForm === 'login'" @close-modal="closeModal" @user-logged-in="userLoggedIn" />      
+      <div v-if="user" class="user-info">
+        <p class="user">Usuario: {{ user.email }}</p>
+        <button @click="logoutUser">Salir</button>
+      </div>
+      
+
+      <!-- Register and login modal forms -->
+      <RegisterForm v-if="showForm === 'register'" @close-modal="closeModal" @register-user="registerUser" />      
+      <LoginForm v-if="showForm === 'login'" @close-modal="closeModal" @login-user="loginUser" />      
     </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import { ref } from "vue"
 import RegisterForm from "../components/RegisterForm.vue"
 import LoginForm from "../components/LoginForm.vue"
-import * as fb from "@/firebase"
+import { createUser, login, logout, currentUser } from "../composables/useAuth"
 
 export default {
   name: 'Home',
@@ -23,52 +30,68 @@ export default {
     LoginForm
   },
 
+  emits: ["close-modal"],
+
   props: [
     "showForm"
   ],
 
-  data() {
+  setup(props, context) {
+    const user = ref(null)
+
+    // **************** Methods *************** //
+    // Emit event to close modal in App component
+    const closeModal = () => {
+      context.emit("close-modal", "")
+    }
+
+    // Register a new user in firebase.
+    const registerUser = (userData) => {
+      console.log(userData)
+      createUser(userData).then((user) => {
+        user.value = user
+        closeModal()
+      })
+      .catch(error => {
+        console.log(error.message)
+      })
+    }
+
+    // Login existing user in firebase
+    const loginUser = (userData) => {
+      console.log(userData)
+      login(userData).then(user => {
+        user.value = user
+        closeModal()
+      })
+      .catch(error => {
+        console.log(error.message)
+      })
+    }
+
+    // Logout current User
+    const logoutUser = () => {
+      logout()
+      console.log("User logged out...")
+      user.value = null
+    }
+
     return {
-      user: null
+      user,
+      closeModal,
+      registerUser,
+      loginUser,
+      logoutUser
     }
-  },
-
-  methods: {
-    // Close register or login form.
-    closeModal() {
-      this.$emit("close-modal", "")
-    },
-
-    userCreated(user) {
-      this.user = user
-      this.closeModal()
-    },
-
-    userLoggedIn(user) {
-      this.user = user
-      this.closeModal()
-    }
-  },
-
-  mounted() {
-    fb.auth.onAuthStateChanged(user => {
-      if (user) {
-        this.user = user
-      } else {
-        this.user = null
-      }
-    })
-  },
-
-  updated() {
-    fb.auth.onAuthStateChanged(user => {
-      if (user) {
-        this.user = user
-      } else {
-        this.user = null
-      }
-    })
   }
+
+  // mounted() {
+  //   this.user = currentUser()
+  // },
+
+  // updated() {
+  //   this.user = currentUser()
+  // }
 
 }
 </script>

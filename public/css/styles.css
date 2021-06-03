@@ -123,9 +123,10 @@ input:focus {
 button {
 	border: 1px solid rgb(54, 187, 154);
 	border-radius: 5px;
-	padding: 0.5rem 1rem;
+	padding: 0.5em 1em;
 	cursor: pointer;
 	font-weight: 600;
+	color: rgb(54, 187, 154);
 }
 
 button[type="submit"] {
@@ -137,6 +138,21 @@ button[type="submit"] {
 button[type="reset"] {
 	background-color: white;
 	margin-left: 1rem;
-	padding: 0.5rem 1rem;
 	color: rgb(54, 187, 154);
+}
+
+/* **************** HOME STYLES ******************* */
+.user {
+	font-weight: 600;
+	font-size: 0.85rem;
+}
+
+.user-info {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.user-info p {
+	margin-right: 1rem;
 }
