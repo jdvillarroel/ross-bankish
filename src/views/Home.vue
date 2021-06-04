@@ -2,9 +2,10 @@
   <div class="home">
     <div class="container">
       <h1>Bienvenid@</h1>
-      <div v-if="user" class="user-info">
-        <p class="user">Usuario: {{ user.email }}</p>
-        <button @click="logoutUser">Salir</button>
+      <div class="user-info">
+        <p v-if="currentUser" class="user">Usuario: {{ currentUser.email }}</p>
+        <button v-if="currentUser" @click="logoutUser">Salir</button>
+        <p v-show="!currentUser">Por favor presione el icono de menu para ingresar</p>
       </div>
       
 
@@ -17,10 +18,11 @@
 
 <script>
 // @ is an alias to /src
-import { ref } from "vue"
+import { onUnmounted, ref, watchEffect } from "vue"
 import RegisterForm from "../components/RegisterForm.vue"
 import LoginForm from "../components/LoginForm.vue"
-import { createUser, login, logout, currentUser } from "../composables/useAuth"
+import { createUser, login, logout } from "../composables/useAuth"
+import { auth } from "../firebase"
 
 export default {
   name: 'Home',
@@ -37,7 +39,8 @@ export default {
   ],
 
   setup(props, context) {
-    const user = ref(null)
+    const currentUser = ref(null)
+    const errorMsg = ref("")
 
     // **************** Methods *************** //
     // Emit event to close modal in App component
@@ -47,51 +50,62 @@ export default {
 
     // Register a new user in firebase.
     const registerUser = (userData) => {
-      console.log(userData)
-      createUser(userData).then((user) => {
-        user.value = user
+
+      createUser(userData).then((createdUser) => {
+        currentUser.value = createdUser
+        errorMsg.value = ""
         closeModal()
       })
       .catch(error => {
-        console.log(error.message)
+        console.log(error)
       })
     }
 
     // Login existing user in firebase
     const loginUser = (userData) => {
-      console.log(userData)
-      login(userData).then(user => {
-        user.value = user
+      login(userData).then(loggedInUser => {
+        currentUser.value = loggedInUser
+        errorMsg.value = ""
         closeModal()
       })
       .catch(error => {
-        console.log(error.message)
+        console.log(error)
       })
     }
 
     // Logout current User
     const logoutUser = () => {
       logout()
-      console.log("User logged out...")
-      user.value = null
     }
 
+    // ********** Watchers ************** //
+    watchEffect(() => {
+      console.log(currentUser.value)
+    })
+
+    // Authentication real time listener
+    const stopAuthListener = auth.onAuthStateChanged(user => {
+      if (user) {
+        currentUser.value = user
+      } else {
+        currentUser.value = null
+      }
+    })
+
+    // ************** Hooks ************ //
+    onUnmounted(() => {
+      stopAuthListener()
+    })
+
     return {
-      user,
+      currentUser,
+      errorMsg,
       closeModal,
       registerUser,
       loginUser,
       logoutUser
     }
   }
-
-  // mounted() {
-  //   this.user = currentUser()
-  // },
-
-  // updated() {
-  //   this.user = currentUser()
-  // }
 
 }
 </script>
