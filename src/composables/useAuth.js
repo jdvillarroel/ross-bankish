@@ -1,4 +1,3 @@
-import { ref, watchEffect } from "vue";
 import { auth, usersRef, accountsRef, transactionsRef, timestamp } from "../firebase";
 
 

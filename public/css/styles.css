@@ -156,3 +156,24 @@ button[type="reset"] {
 .user-info p {
 	margin-right: 1rem;
 }
+
+/* **************** BALANCE CARD STYLES ******************* */
+.balance-wrap {
+	margin: 1rem auto;
+	background-color: rgba(54, 187, 154, 0.6);
+	border-radius: 10px;
+	text-align: center;
+	max-width: 25rem;
+	color: rgba(53, 53, 53, 0.8);
+	padding: 1em 0;
+}
+
+.balance-wrap h3 {
+	margin: 0.5em 0;
+}
+
+.balance-wrap p {
+	letter-spacing: 2px;
+	font-size: 0.9rem;
+	font-weight: 600;
+}
