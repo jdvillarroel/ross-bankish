@@ -1,6 +1,5 @@
 import { auth, usersRef, accountsRef, transactionsRef, timestamp } from "../firebase";
 
-
 const createUser = async (userInfo) => {
     const userCredential = await auth.createUserWithEmailAndPassword(userInfo.email, userInfo.password);
 
@@ -9,7 +8,8 @@ const createUser = async (userInfo) => {
       lastName: userInfo.lastName,
       email: userInfo.email,
       balance: 0,
-      createdAt: timestamp()
+      createdAt: timestamp(),
+      type: "regular"
     });
 
     const userTransactions = await transactionsRef.doc(userCredential.user.uid).set({

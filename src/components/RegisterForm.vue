@@ -20,7 +20,7 @@
         <div class="form-row">
           <label for="password">Password</label>
           <input :type="passType" id="password" required v-model="password" >
-          <p class="form-message" @click="togglePasswordType">Show/hide password</p>
+          <p class="form-message" @click="togglePasswordType">Mostrar/Ocultar clave</p>
           <p class="error-message">{{ errorMessage }}</p>
         </div>
         

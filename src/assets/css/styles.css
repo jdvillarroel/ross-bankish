@@ -1,5 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;600;700&display=swap");
 
+:root {
+	--color-primary: rgb(54, 187, 154);
+	--color-primary-light: rgba(54, 187, 154, 0.6);
+	--color-text: rgb(53, 53, 53);
+	--color-text-light: rgba(53, 53, 53, 0.5);
+	--color-background: #f0f0f0;
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -7,21 +15,21 @@
 }
 
 body {
-	background-color: #f0f0f0;
+	background-color: var(--color-background);
 	font-family: "Montserrat Alternates", sans-serif;
-	color: rgb(53, 53, 53);
+	color: var(--color-text);
 	line-height: 1.5;
 }
 
 .router-link-active {
-	background-color: rgb(54, 187, 154);
+	background-color: var(--color-primary);
 	font-weight: 600;
 	color: white !important;
 }
 
 /* **************** HEADER STYLES ******************* */
 header {
-	background-color: rgb(54, 187, 154);
+	background-color: var(--color-primary);
 }
 
 .header-container {
@@ -82,10 +90,11 @@ header {
 }
 
 .modal {
-	width: 80%;
+	width: 90%;
 	max-width: 35rem;
 	background-color: white;
 	border-radius: 10px;
+	margin: 0 auto;
 }
 
 input {
@@ -120,8 +129,16 @@ input:focus {
 	align-items: center;
 }
 
+textarea {
+	width: 100%;
+	color: rgb(53, 53, 53);
+	font-family: "Montserrat Alternates", sans-serif;
+	padding: 0.1rem 0.2rem;
+	outline-color: rgba(53, 53, 53, 0.5);
+}
+
 button {
-	border: 1px solid rgb(54, 187, 154);
+	border: 1px solid var(--color-primary);
 	border-radius: 5px;
 	padding: 0.5em 1em;
 	cursor: pointer;
@@ -130,7 +147,7 @@ button {
 }
 
 button[type="submit"] {
-	background-color: rgb(54, 187, 154);
+	background-color: var(--color-primary);
 	margin-left: 1rem;
 	color: white;
 }
@@ -138,7 +155,7 @@ button[type="submit"] {
 button[type="reset"] {
 	background-color: white;
 	margin-left: 1rem;
-	color: rgb(54, 187, 154);
+	color: var(--color-primary);
 }
 
 /* **************** HOME STYLES ******************* */
@@ -160,11 +177,11 @@ button[type="reset"] {
 /* **************** BALANCE CARD STYLES ******************* */
 .balance-wrap {
 	margin: 1rem auto;
-	background-color: rgba(54, 187, 154, 0.6);
+	background-color: var(--color-primary-light);
 	border-radius: 10px;
 	text-align: center;
 	max-width: 25rem;
-	color: rgba(53, 53, 53, 0.8);
+	color: var(--color-text-light);
 	padding: 1em 0;
 }
 

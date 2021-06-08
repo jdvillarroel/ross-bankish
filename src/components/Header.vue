@@ -15,8 +15,8 @@
     <transition name="nav-links">
     <ul v-if="isMenuOpen" class="actions">
       <li @click="loginUser">Ingresar</li>
-      <!-- <li @click="logoutUser">Salir</li> -->
       <li @click="registerUser">Registrarse</li>
+      <li @click="logoutUser">Salir</li>
     </ul>
     </transition>
   </header>
@@ -27,7 +27,8 @@ import { ref } from 'vue'
 
 export default {
   emits: [
-    "show-modal"
+    "show-modal",
+    "logout-user"
   ],
 
   setup(props, context) {
@@ -48,7 +49,12 @@ export default {
       setTimeout(toggleMenu, 1000)
     }
 
-    return { isMenuOpen, toggleMenu, loginUser, registerUser }
+    const logoutUser = () => {
+      context.emit("logout-user")
+      setTimeout(toggleMenu, 1000)
+    }
+
+    return { isMenuOpen, toggleMenu, loginUser, registerUser, logoutUser }
   }
 }
 </script>

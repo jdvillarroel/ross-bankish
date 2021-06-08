@@ -26,28 +26,4 @@ const transactionsRef = db.collection("transactions");
 //db.settings({ timestampsInSnapshots: true });
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-// *************** Functions ********************* //
-// Create user in firebase using email and password. Returns new user created.
-// export const createUser = async (userInfo) => {
-//   const userCredential = await auth.createUserWithEmailAndPassword(userInfo.email, userInfo.password);
-//   const userAccount = await usersRef.doc(userCredential.user.uid).set({
-//       firstName: userInfo.firstName,
-//       lastName: userInfo.lastName,
-//       email: userInfo.email,
-//       createdAt: new Date()
-//   });
-  
-//   return userCredential.user;
-// }
-
-// export const loginUser = async (userInfo) => {
-//   const userLoggedIn = await auth.signInWithEmailAndPassword(userInfo.email, userInfo.password);
-
-//   return userLoggedIn;
-// }
-
-// export const logout = () => {
-//   auth.signOut();
-// }
-
 export { auth, db, accountsRef, usersRef, transactionsRef, timestamp }

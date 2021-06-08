@@ -11,7 +11,7 @@
         <div class="form-row">
           <label for="loginPassword">Password</label>
           <input :type="passType" id="loginPassword" required v-model="loginPassword" >
-          <p class="form-message" @click="togglePasswordType">Show/hide password</p>
+          <p class="form-message" @click="togglePasswordType">Mostrar/Ocultar clave</p>
           <p class="error-message">{{ errorMessage }}</p>
         </div>
         
