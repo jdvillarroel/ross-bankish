@@ -1,16 +1,8 @@
 <template>
   <div class="home">
     <div class="container">
+      <RegularUser />
 
-      <h1 v-show="currentUser">Bienvenid@</h1>
-      <p v-show="!currentUser">Por favor presione el icono de menu para ingresar</p>
-      <div v-if="userAccount.type === 'regular'" class="user-info">
-        <p class="user">Usuario: {{ currentUser.email }}</p>
-      </div> 
-
-      <!-- Balance card -->
-      <Balance v-show="userAccount.type === 'regular'" :userAccount="userAccount" />
-      <!-- <TransactionForm /> -->
 
     </div>
   </div>
@@ -20,32 +12,21 @@
 <script>
 // @ is an alias to /src
 import {  ref } from "vue"
-import TransactionForm from "../components/TransactionForm.vue"
-import Balance from "../components/Balance.vue"
+import RegularUser from "../components/RegularUser.vue"
 
 export default {
   name: 'Home',
 
   components: {
-    TransactionForm,
-    Balance
+    RegularUser
   },
 
-  props: [
-    "showForm"
-  ],
-
   setup(props, context) {
-    const currentUser = ref(null)
-    const errorMsg = ref("")
-    const userAccount = ref({})
 
     // **************** Methods *************** //
 
     return {
-      currentUser,
-      userAccount,
-      errorMsg
+
     }
   }
 
