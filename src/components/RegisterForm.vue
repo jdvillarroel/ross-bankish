@@ -35,10 +35,14 @@
 </template>
 
 <script>
-import { ref, computed, onUnmounted } from 'vue'
+import { ref, computed, onUnmounted, watchEffect } from 'vue'
 
 export default {
   emits: ["close-modal", "register-user"],
+
+  props: {
+    registerError: String
+  },
 
   setup(props, context) {
     const fName = ref("")
@@ -73,6 +77,12 @@ export default {
       lName.value = ""
       email.value = ""
       password.value = ""
+      errorMessage.value = ""
+      passType.value = "password"
+    })
+
+    watchEffect(() => {
+      errorMessage.value = props.registerError
     })
 
     return {

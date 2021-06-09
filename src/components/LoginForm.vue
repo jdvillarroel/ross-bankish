@@ -26,10 +26,14 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 
 export default {
   emits: ["close-modal", "login-user"],
+
+  props: {
+    loginError: String
+  },
 
   setup(props, context) {
     const loginEmail = ref("")
@@ -56,15 +60,19 @@ export default {
       context.emit("login-user", userData.value)
     }
 
+    watchEffect(() => {
+      errorMessage.value = props.loginError
+    })
+
     return {
       loginEmail,
       loginPassword,
       passType,
-      errorMessage,
       userData,
       togglePasswordType,
       closeLoginForm,
-      loginUser
+      loginUser,
+      errorMessage
     }
   }
 }
