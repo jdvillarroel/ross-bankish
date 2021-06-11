@@ -2,10 +2,11 @@
   <div class="user-info">
     <p class="user">Usuario: {{ currentUser.email }}</p>
   </div>
+  <Balance :userAccount="userAccount" />
 </template>
 
 <script>
-import { ref, watchEffect } from 'vue'
+import Balance from "./Balance.vue"
 
 export default {
   name: "RegularUser",
@@ -13,7 +14,14 @@ export default {
   props: {
     currentUser: {
       type: Object
+    },
+    userAccount: {
+      type: Object
     }
+  },
+
+  components: {
+    Balance
   },
 
   setup(props) {

@@ -1,25 +1,21 @@
 <template>
   <div class="balance-wrap">
     <h3>Balance Disponible</h3>
-    <p>VUSD: <em>${{ balance }}</em></p>
+    <p>VUSD: <em>${{ userAccount.balance }}</em></p>
   </div>
 </template>
 
 <script>
-import { ref, watchEffect } from 'vue'
+
 export default {
   name: "Balance",
 
-  props: ["userAccount"],
+  props: {
+    userAccount: Object
+  },
 
   setup(props) {
-    const balance = ref(null)
-
-    watchEffect(() => {
-      balance.value = props.userAccount.balance
-    })
-
-    return { balance }
+    
   }
 }
 </script>

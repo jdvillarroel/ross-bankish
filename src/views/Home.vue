@@ -6,6 +6,7 @@
       <RegularUser
         v-if="isAuth && userType === 'regularUser'"
         :currentUser="currentUser"
+        :userAccount="userAccount"
       />
 
     </div>
@@ -24,7 +25,8 @@ export default {
   props: {
     isAuth: Boolean,
     currentUser: Object,
-    userType: String
+    userType: String,
+    userAccount: Object
   },
 
   components: {

@@ -6,6 +6,7 @@
     :isAuth="isAuth"
     :userType="userType"
     :currentUser="currentUser"
+    :userAccount="userAccount"
   />
 
   <!-- Register and login modal forms -->
@@ -55,10 +56,12 @@ export default {
     })
     const registerError = ref("")
     const loginError = ref("")
+    const accountError = ref("")
     const isAuth = ref(false)
     let stopAuthObserver = ref(null)
+    let stopAccountObserver = ref(null)
     let userAccount = reactive({
-      firstname: "",
+      firstName: "",
       lastName: "",
       email: "",
       createdAt: null,
@@ -74,25 +77,49 @@ export default {
            */
           currentUser.uid = user.uid
           currentUser.email = user.email
+          console.log(user)
 
           // Set the user type
           userType.value = currentUser.uid === "sakjdksdjfsjdfk34rfds44" ? "adminUser" : "regularUser"
-
-          console.log(user)
           isAuth.value = true
+
+          // Define a account observer to listen for real time changes
+          stopAccountObserver = accountsRef.doc(currentUser.uid).onSnapshot(account => {
+            userAccount.firstName = account.data().firstName
+            userAccount.lastName = account.data().lastName
+            userAccount.email = account.data().email
+            userAccount.balance = account.data().balance
+          }, e => {
+            accountError.value = e
+            console.log(e)
+          })
+          
         }else {
           console.log("No user logged in...")
+
+          // Reset user
           currentUser.uid = ""
           currentUser.email = ""
+
+          // No user logged in
           isAuth.value = false
           userType.value = ""
+
+          // Reset Account
+          userAccount.firstName = ""
+          userAccount.lastName = ""
+          userAccount.email = ""
+          userAccount.balance = 0
+          // stopAuthObserver()
         }
       })
+
     }),
 
     onUnmounted(() => {
       stopAuthObserver()
       console.log("Auth observer stopped...")
+      stopAuthObserver()
     })
 
     /** 
@@ -132,18 +159,18 @@ export default {
     const registerUser = (userData) => {
       auth.createUserWithEmailAndPassword(userData.email, userData.password)
       .then(userCredential => {
+        // closeModal()
         // Create a user account in the database
-        console.log(userData)
         return accountsRef.doc(userCredential.user.uid).set({
-          firstName: userData.firstname,
+          firstName: userData.firstName,
           lastName: userData.lastName,
           email: userData.email,
-          createdAt: timestamp,
+          createdAt: timestamp(),
           balance: 0
         })
       })
-      .then(acc => {
-        console.log(acc)
+      .then(() => {
+        console.log("Account created...")
         closeModal()
       })
       .catch(e => {
@@ -170,6 +197,7 @@ export default {
       userType,
       // Variables
       currentUser,
+      userAccount,
       loginError,
       registerError,
       isAuth
