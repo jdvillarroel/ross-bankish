@@ -54,7 +54,7 @@ export default {
 
     // ********** Computed properties *************** //
     const userData = computed(() => {
-      return {firstName: fName.value, lastName: lName.value, email: email.value, password: password.value}
+      return {firstName: fName.value, lastName: lName.value, email: email.value.toLowerCase(), password: password.value}
     })
 
     // ********** Methods ************ //

@@ -43,7 +43,7 @@ export default {
 
     // ********** Computed variables ************** //
     const userData = computed(() => {
-      return {email: loginEmail.value, password: loginPassword.value}
+      return {email: loginEmail.value.toLowerCase(), password: loginPassword.value}
     })
 
     // **************** Methods **************** //

@@ -2,7 +2,11 @@
   <Header @show-modal="showModal" @logout-user="logoutUser" />
   <Links />
   <!-- <router-view :showForm="showForm" @close-modal="showModal"/> -->
-  <router-view />
+  <router-view
+    :isAuth="isAuth"
+    :userType="userType"
+    :currentUser="currentUser"
+  />
 
   <!-- Register and login modal forms -->
   <RegisterForm
@@ -29,7 +33,7 @@ import Header from "./components/Header.vue"
 import Links from "./components/Links.vue"
 import RegisterForm from "./components/RegisterForm.vue"
 import LoginForm from "./components/LoginForm.vue"
-import { auth } from "./firebase"
+import { auth, accountsRef, timestamp } from "./firebase"
 
 export default {
   
@@ -45,22 +49,43 @@ export default {
   setup() {
     const showForm = ref("")
     const userType = ref("")
-    const currentUser = ref(null)
+    let currentUser = reactive({
+      uid: "",
+      email: ""
+    })
     const registerError = ref("")
     const loginError = ref("")
-    const isUserLoggedIn = ref(false)
+    const isAuth = ref(false)
     let stopAuthObserver = ref(null)
+    let userAccount = reactive({
+      firstname: "",
+      lastName: "",
+      email: "",
+      createdAt: null,
+      balance: null
+    })
 
     onBeforeMount(() => {
       stopAuthObserver = auth.onAuthStateChanged(user => {
         if (user) {
-          currentUser.value = user
-          console.log(currentUser.value.uid)
-          console.log(currentUser.value.email)
-          isUserLoggedIn.value = true
+          /** 
+           * As the currentUser is a reactive object all the properties assignmenst have to be individually done.
+           * If we add a value that is not part of the object, it loses its reactivity.
+           */
+          currentUser.uid = user.uid
+          currentUser.email = user.email
+
+          // Set the user type
+          userType.value = currentUser.uid === "sakjdksdjfsjdfk34rfds44" ? "adminUser" : "regularUser"
+
+          console.log(user)
+          isAuth.value = true
         }else {
           console.log("No user logged in...")
-          isUserLoggedIn.value = false
+          currentUser.uid = ""
+          currentUser.email = ""
+          isAuth.value = false
+          userType.value = ""
         }
       })
     }),
@@ -80,6 +105,12 @@ export default {
 
     // Close modal
     const closeModal = () => {
+      // Reset login error message in case it has a previous value
+      loginError.value = ""
+
+      // Reset register error value in case it has a previos value
+      registerError.value = ""
+
       showForm.value = ""
     }
 
@@ -87,7 +118,7 @@ export default {
     const loginUser = (userData) => {
       auth.signInWithEmailAndPassword(userData.email, userData.password)
       .then(userCredential => {
-
+        
         closeModal()
       })
       .catch(e => {
@@ -101,7 +132,18 @@ export default {
     const registerUser = (userData) => {
       auth.createUserWithEmailAndPassword(userData.email, userData.password)
       .then(userCredential => {
-
+        // Create a user account in the database
+        console.log(userData)
+        return accountsRef.doc(userCredential.user.uid).set({
+          firstName: userData.firstname,
+          lastName: userData.lastName,
+          email: userData.email,
+          createdAt: timestamp,
+          balance: 0
+        })
+      })
+      .then(acc => {
+        console.log(acc)
         closeModal()
       })
       .catch(e => {
@@ -130,7 +172,7 @@ export default {
       currentUser,
       loginError,
       registerError,
-      isUserLoggedIn
+      isAuth
     }
   }
 }

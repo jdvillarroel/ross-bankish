@@ -1,8 +1,12 @@
 <template>
   <div class="home">
     <div class="container">
-      <RegularUser />
-
+      <h1 v-show="isAuth">Bienvenid@</h1>
+      <p v-show="!isAuth">Por favor presione el icono de menu para ingresar</p>
+      <RegularUser
+        v-if="isAuth && userType === 'regularUser'"
+        :currentUser="currentUser"
+      />
 
     </div>
   </div>
@@ -17,6 +21,12 @@ import RegularUser from "../components/RegularUser.vue"
 export default {
   name: 'Home',
 
+  props: {
+    isAuth: Boolean,
+    currentUser: Object,
+    userType: String
+  },
+
   components: {
     RegularUser
   },
@@ -26,7 +36,7 @@ export default {
     // **************** Methods *************** //
 
     return {
-
+      
     }
   }
 
@@ -34,15 +44,6 @@ export default {
 </script>
 
 <style>
-  .container {
-    width: 90%;
-    margin: 1rem auto;
-    text-align: center;
-  }
 
-  .container h1 {
-    margin-bottom: 0.8rem;
-    font-size: 1.7rem;
-  }
 
 </style>

@@ -1,15 +1,24 @@
 <template>
-  <h4>Regular User</h4>
-  <h1>Bienvenid@</h1>
-  <p>Por favor presione el icono de menu para ingresar</p>
   <div class="user-info">
-    <p class="user">Usuario: </p>
+    <p class="user">Usuario: {{ currentUser.email }}</p>
   </div>
 </template>
 
 <script>
+import { ref, watchEffect } from 'vue'
+
 export default {
-  name: "RegularUser"
+  name: "RegularUser",
+
+  props: {
+    currentUser: {
+      type: Object
+    }
+  },
+
+  setup(props) {
+    
+  }
 
 }
 </script>
