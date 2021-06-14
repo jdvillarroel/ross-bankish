@@ -240,3 +240,7 @@ button[type="reset"] {
 	margin: 1.5rem auto 1rem;
 	cursor: pointer;
 }
+
+.transactions-title h4 {
+	margin: 0 0.2rem;
+}

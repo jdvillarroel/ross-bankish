@@ -1,8 +1,8 @@
 <template>
   <div class="transactions-title" @click="handleTransactions">
     <h4>Historial de Transacciones</h4>
-    <span v-show="!showTransactions" class="material-icons">expand_more</span>
-    <span v-show="showTransactions" class="material-icons">expand_less</span>
+    <!-- <span v-show="!showTransactions" class="material-icons">expand_more</span> -->
+    <span class="material-icons"> history</span>
   </div>
 
   <div v-show="showTransactions">
