@@ -3,10 +3,14 @@
     <p class="user">Usuario: {{ currentUser.email }}</p>
   </div>
   <Balance :userAccount="userAccount" />
+  <TransactionForm />
+  <Transactions />
 </template>
 
 <script>
 import Balance from "./Balance.vue"
+import TransactionForm from "./TransactionForm.vue"
+import Transactions from "./Transactions.vue"
 
 export default {
   name: "RegularUser",
@@ -21,7 +25,9 @@ export default {
   },
 
   components: {
-    Balance
+    Balance,
+    TransactionForm,
+    Transactions
   },
 
   setup(props) {

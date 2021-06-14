@@ -2,7 +2,7 @@
 
 :root {
 	--color-primary: rgb(54, 187, 154);
-	--color-primary-light: rgba(54, 187, 154, 0.6);
+	--color-primary-light: rgba(54, 187, 154, 0.8);
 	--color-text: rgb(53, 53, 53);
 	--color-text-light: rgba(53, 53, 53, 0.8);
 	--color-background: #f0f0f0;
@@ -80,6 +80,13 @@ header {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.form-wrap {
+	background-color: white;
+	border-radius: 10px;
+	margin: 0.5rem auto;
+	max-width: 25rem;
 }
 
 .form-row {
@@ -188,11 +195,12 @@ button[type="reset"] {
 /* **************** BALANCE CARD STYLES ******************* */
 .balance-wrap {
 	margin: 1rem auto;
-	background-color: var(--color-primary-light);
-	border-radius: 10px;
+	background-color: var(--color-primary);
+	border-radius: 5px;
 	text-align: center;
 	max-width: 25rem;
-	color: var(--color-text-light);
+	/* color: var(--color-text-light); */
+	color: white;
 	padding: 1em 0;
 }
 
@@ -204,4 +212,31 @@ button[type="reset"] {
 	letter-spacing: 2px;
 	font-size: 0.9rem;
 	font-weight: 600;
+}
+
+/* **************** TRANSACTION FORM STYLES ******************* */
+.transaction-form-title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--color-primary-light);
+	padding: 0.5rem;
+	border-radius: 5px;
+	color: white;
+	max-width: 25rem;
+	margin: 1.5rem auto 1rem;
+	cursor: pointer;
+}
+
+.transactions-title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--color-primary-light);
+	padding: 0.5rem;
+	border-radius: 5px;
+	color: white;
+	max-width: 25rem;
+	margin: 1.5rem auto 1rem;
+	cursor: pointer;
 }
