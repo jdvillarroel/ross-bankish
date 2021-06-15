@@ -6,7 +6,7 @@
   </div>
   
   <div class="form-wrap">
-    <form @submit.prevent="handleTransaction" v-show="showTransactionForm">
+    <form @submit.prevent="handleTransaction" v-show="showTransactionForm" ref="transactionForm">
     <div class="form-row">
       <label for="from">De (email)</label>
       <input type="email" id="from" required v-model="from">
@@ -19,7 +19,7 @@
     
     <div class="form-row">
       <label for="amount">Cantidad</label>
-      <input type="number" min="0" step="0.01" id="amount" required v-model="amount">
+      <input type="number" min="0" step="0.01" id="amount" required v-model.number="amount">
     </div>
     
     <div class="form-row">
@@ -38,22 +38,48 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import { ref } from 'vue'
+import { computed } from '@vue/runtime-core'
+
 export default {
   name: "TransactionForm",
 
-  setup() {
+  emits: [ "transaction-event" ],
+
+  setup(props, context) {
     const from = ref("")
     const to = ref("")
     const amount = ref(null)
     const description = ref("")
     const showTransactionForm = ref(false)
+    const transactionForm = ref(null)
+
+    // ******* Computed data ********* //
+    const transaction = computed(() => {
+      return {
+        from: from.value,
+        to: to.value,
+        amount: parseFloat(amount.value),
+        description: description.value,
+        status: "pending"
+      }
+    })
 
     const handleTransaction = () => {
       console.log(from.value)
       console.log(to.value)
       console.log(amount.value)
       console.log(description.value)
+
+      context.emit("transaction-event", transaction.value)
+
+      // Reset form
+      transactionForm.value.reset()
+      from.value = ""
+      to.value = ""
+      amount.value = null
+      description.value = ""
+      setTimeout(toggleForm, 800)
     }
 
     const toggleForm = () => {
@@ -61,7 +87,16 @@ export default {
     }
 
 
-    return { from, to, amount, description, showTransactionForm, handleTransaction, toggleForm }
+    return {
+      from,
+      to,
+      amount,
+      description,
+      showTransactionForm,
+      handleTransaction,
+      toggleForm,
+      transactionForm
+    }
   }
 }
 </script>

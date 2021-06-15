@@ -3,7 +3,8 @@
     <p class="user">Usuario: {{ currentUser.email }}</p>
   </div>
   <Balance :userAccount="userAccount" />
-  <TransactionForm />
+  <ErrorMsg v-show="transactionError.length" :errorMsg="transactionError" />
+  <TransactionForm @transaction-event="handleTransaction" />
   <Transactions />
 </template>
 
@@ -11,6 +12,9 @@
 import Balance from "./Balance.vue"
 import TransactionForm from "./TransactionForm.vue"
 import Transactions from "./Transactions.vue"
+import ErrorMsg from "./ErrorMsg.vue"
+import { transactionsRef, timestamp } from "../firebase"
+import { ref } from '@vue/reactivity'
 
 export default {
   name: "RegularUser",
@@ -27,11 +31,37 @@ export default {
   components: {
     Balance,
     TransactionForm,
-    Transactions
+    Transactions,
+    ErrorMsg
   },
 
   setup(props) {
-    
+    const transactionError = ref("")
+
+    const handleTransaction = (transaction) => {
+      // Veriy the user has funds to transfer.
+      if (props.userAccount.balance >= transaction.amount) {
+        transactionsRef.add({
+          ...transaction,
+          date: timestamp()
+        })
+        .then(docRef => {
+          console.log(docRef)
+        })
+        .catch(e => {
+          console.log(e)
+          transactionError.value = e.message
+          setTimeout(() => {transactionError.value = ""}, 10000)
+        })
+      } else {
+        transactionError.value = "Fondos no son sufucientes."
+        setTimeout(() => {transactionError.value = ""}, 5000)
+      }
+
+      
+    }
+
+    return { transactionError, handleTransaction }
   }
 
 }

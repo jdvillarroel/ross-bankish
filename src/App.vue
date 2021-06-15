@@ -89,6 +89,7 @@ export default {
             userAccount.lastName = account.data().lastName
             userAccount.email = account.data().email
             userAccount.balance = account.data().balance
+            userAccount.createdAt = account.data().createdAt.toDate()
           }, e => {
             accountError.value = e
             console.log(e)

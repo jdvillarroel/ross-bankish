@@ -244,3 +244,13 @@ button[type="reset"] {
 .transactions-title h4 {
 	margin: 0 0.2rem;
 }
+
+.error-msg {
+	background-color: rgb(252, 127, 105);
+	border-radius: 5px;
+	padding: 0.5rem;
+	font-size: 0.8rem;
+	font-weight: 600;
+	max-width: 25rem;
+	margin: 0 auto;
+}
