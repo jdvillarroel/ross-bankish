@@ -8,11 +8,21 @@
   <div v-show="showTransactions">
     <p>Mostrar ultimas transacciones</p>
     <button @click="handleTransactions">Mostrar</button>
+
+    <details v-for="(transaction, index) in transactions" :key="transaction.id" class="transaction-details">
+      <summary><span>{{ index + 1 }} - </span> Fecha: {{ transaction.date.toDate().toLocaleString() }}</summary>
+      <div>
+        <p>De: {{ transaction.from }}</p>
+        <p>Para: {{ transaction.to }}</p>
+        <p>Monto: ${{ transaction.amount }}</p>
+        <p>Descripcion: {{ transaction.description }}</p>
+      </div>
+    </details>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, reactive, toRef } from 'vue'
 import { transactionsRef } from "../firebase"
 
 export default {
@@ -20,6 +30,7 @@ export default {
 
   setup() {
     const showTransactions = ref(false)
+    let transactions = ref(null)
 
     // ********* Methods ********** //
     const toggleTransactions = () => {
@@ -27,19 +38,25 @@ export default {
     }
 
     const handleTransactions = () => {
-      transactionsRef.get()
+      let trans = []
+
+      transactionsRef.orderBy("date", "desc").limit(10).get()
       .then(docs => {
-        docs.forEach(doc => {
-          console.log(doc.data())
+        docs.forEach((doc) => {
+          trans.push({...doc.data(), id: doc.id})          
         })
+        return trans
+      })
+      .then(data => {
+        transactions.value = data
       })
       .catch(e => {
         console.log(e)
       })
-
+      console.log(transactions)
     }
 
-    return { showTransactions, handleTransactions, toggleTransactions }
+    return { transactions, showTransactions, handleTransactions, toggleTransactions }
   }
 }
 </script>

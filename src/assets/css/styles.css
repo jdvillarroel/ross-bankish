@@ -254,3 +254,20 @@ button[type="reset"] {
 	max-width: 25rem;
 	margin: 0 auto;
 }
+
+.transaction-details {
+	margin: 0.5rem auto;
+	max-width: 25rem;
+	font-size: 0.85rem;
+}
+
+summary {
+	list-style: none;
+	border: 1px solid var(--color-primary-light);
+	border-radius: 5px;
+	padding: 0.3rem;
+}
+
+summary::-webkit-details-marker {
+	display: none;
+}
