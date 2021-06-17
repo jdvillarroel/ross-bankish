@@ -13,7 +13,7 @@ import Balance from "./Balance.vue"
 import TransactionForm from "./TransactionForm.vue"
 import Transactions from "./Transactions.vue"
 import ErrorMsg from "./ErrorMsg.vue"
-import { transactionsRef, timestamp } from "../firebase"
+import { transactionsRef, timestamp, accountsRef } from "../firebase"
 import { ref } from '@vue/reactivity'
 
 export default {
@@ -43,6 +43,7 @@ export default {
       if (props.userAccount.balance >= transaction.amount) {
         transactionsRef.add({
           ...transaction,
+          id: props.currentUser.uid,
           date: timestamp()
         })
         .then(docRef => {

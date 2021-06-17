@@ -65,6 +65,7 @@ export default {
       lastName: "",
       email: "",
       createdAt: null,
+      userType: "",
       balance: null
     })
 
@@ -80,7 +81,7 @@ export default {
           console.log(user)
 
           // Set the user type
-          userType.value = currentUser.uid === "sakjdksdjfsjdfk34rfds44" ? "adminUser" : "regularUser"
+          // userType.value = currentUser.uid === "sakjdksdjfsjdfk34rfds44" ? "adminUser" : "regularUser"
           isAuth.value = true
 
           // Define a account observer to listen for real time changes
@@ -90,6 +91,9 @@ export default {
             userAccount.email = account.data().email
             userAccount.balance = account.data().balance
             userAccount.createdAt = account.data().createdAt.toDate()
+            userAccount.userType = account.data().userType
+
+            userType.value = account.data().userType
           }, e => {
             accountError.value = e
             console.log(e)
@@ -111,6 +115,7 @@ export default {
           userAccount.lastName = ""
           userAccount.email = ""
           userAccount.balance = 0
+          userAccount.userType = ""
           // stopAuthObserver()
         }
       })
@@ -167,6 +172,7 @@ export default {
           lastName: userData.lastName,
           email: userData.email,
           createdAt: timestamp(),
+          userType: "regularUser",
           balance: 0
         })
       })

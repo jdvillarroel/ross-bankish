@@ -45,10 +45,7 @@ export default {
         docs.forEach((doc) => {
           trans.push({...doc.data(), id: doc.id})          
         })
-        return trans
-      })
-      .then(data => {
-        transactions.value = data
+        transactions.value = trans
       })
       .catch(e => {
         console.log(e)
