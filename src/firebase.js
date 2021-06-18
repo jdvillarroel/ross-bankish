@@ -21,9 +21,10 @@ const db = firebase.firestore();
 const accountsRef = db.collection("accounts");
 const usersRef = db.collection("users");
 const transactionsRef = db.collection("transactions");
+const increment = firebase.firestore.FieldValue.increment;
 
 // Update firestore settings
 //db.settings({ timestampsInSnapshots: true });
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-export { auth, db, accountsRef, usersRef, transactionsRef, timestamp }
+export { auth, db, accountsRef, usersRef, transactionsRef, timestamp, increment }

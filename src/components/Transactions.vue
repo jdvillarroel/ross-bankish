@@ -28,7 +28,13 @@ import { transactionsRef } from "../firebase"
 export default {
   name: "Transactions",
 
-  setup() {
+  props: {
+    currentUser: {
+      type: Object
+    }
+  },
+
+  setup(props) {
     const showTransactions = ref(false)
     let transactions = ref(null)
 
@@ -40,7 +46,7 @@ export default {
     const handleTransactions = () => {
       let trans = []
 
-      transactionsRef.orderBy("date", "desc").limit(10).get()
+      transactionsRef.where("id", "==", props.currentUser.uid).orderBy("date", "desc").limit(10).get()
       .then(docs => {
         docs.forEach((doc) => {
           trans.push({...doc.data(), id: doc.id})          

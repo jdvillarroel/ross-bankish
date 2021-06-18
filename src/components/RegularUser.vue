@@ -5,7 +5,7 @@
   <Balance :userAccount="userAccount" />
   <ErrorMsg v-show="transactionError.length" :errorMsg="transactionError" />
   <TransactionForm @transaction-event="handleTransaction" />
-  <Transactions />
+  <Transactions :currentUser="currentUser" />
 </template>
 
 <script>
@@ -13,7 +13,7 @@ import Balance from "./Balance.vue"
 import TransactionForm from "./TransactionForm.vue"
 import Transactions from "./Transactions.vue"
 import ErrorMsg from "./ErrorMsg.vue"
-import { transactionsRef, timestamp, accountsRef } from "../firebase"
+import { transactionsRef, timestamp, accountsRef, increment } from "../firebase"
 import { ref } from '@vue/reactivity'
 
 export default {
@@ -41,19 +41,23 @@ export default {
     const handleTransaction = (transaction) => {
       // Veriy the user has funds to transfer.
       if (props.userAccount.balance >= transaction.amount) {
-        transactionsRef.add({
-          ...transaction,
-          id: props.currentUser.uid,
-          date: timestamp()
+        accountsRef.doc(props.currentUser.uid).update({
+          balance: increment(-transaction.amount)
         })
-        .then(docRef => {
-          console.log(docRef)
+        .then(() => {
+          return transactionsRef.add({
+            ...transaction,
+            id: props.currentUser.uid,
+            date: timestamp()
+          })
+        })
+        .then(() => {
+          console.log(`Transaction success! Balance: ${props.userAccount.balance}`)
         })
         .catch(e => {
           console.log(e)
-          transactionError.value = e.message
-          setTimeout(() => {transactionError.value = ""}, 10000)
         })
+
       } else {
         transactionError.value = "Fondos no son sufucientes."
         setTimeout(() => {transactionError.value = ""}, 5000)
