@@ -23,6 +23,8 @@
     :loginError="loginError"
   />
 
+  <Loader v-if="showLoader" />
+
 
 </template>
 
@@ -34,6 +36,7 @@ import Header from "./components/Header.vue"
 import Links from "./components/Links.vue"
 import RegisterForm from "./components/RegisterForm.vue"
 import LoginForm from "./components/LoginForm.vue"
+import Loader from "./components/Loader.vue"
 import { auth, accountsRef, timestamp } from "./firebase"
 
 export default {
@@ -44,7 +47,8 @@ export default {
     Header,
     Links,
     RegisterForm,
-    LoginForm
+    LoginForm,
+    Loader
   },
 
   setup() {
@@ -68,6 +72,7 @@ export default {
       userType: "",
       balance: null
     })
+    const showLoader = ref(false)
 
     onBeforeMount(() => {
       stopAuthObserver = auth.onAuthStateChanged(user => {
@@ -149,20 +154,27 @@ export default {
 
     // Login user
     const loginUser = (userData) => {
+      // Display loader
+      showLoader.value = true
+
       auth.signInWithEmailAndPassword(userData.email, userData.password)
-      .then(userCredential => {
-        
+      .then(userCredential => {        
         closeModal()
+        showLoader.value = false
       })
       .catch(e => {
         loginError.value = e.message
         console.log(e)
+        showLoader.value = false
       })
       
     }
 
     // Register new user
     const registerUser = (userData) => {
+      // Display loader
+      showLoader.value = true
+
       auth.createUserWithEmailAndPassword(userData.email, userData.password)
       .then(userCredential => {
         // closeModal()
@@ -179,18 +191,29 @@ export default {
       .then(() => {
         console.log("Account created...")
         closeModal()
+        showLoader.value = false
       })
       .catch(e => {
         registerError.value = e.message
         console.log(e)
+        showLoader.value = false
       })      
     }
 
     // Logout existing user
     const logoutUser = () => {
+      // Display loader
+      showLoader.value = true
+
       auth.signOut()
-      .then(console.log("User logged out..."))
-      .catch(e => console.log(e))
+      .then(() => {
+        console.log("User logged out...")
+        showLoader.value = false
+      })
+      .catch(e => {
+        console.log(e)
+        showLoader.value = false
+      })
     }
 
     return {
@@ -207,7 +230,8 @@ export default {
       userAccount,
       loginError,
       registerError,
-      isAuth
+      isAuth,
+      showLoader
     }
   }
 }

@@ -19,11 +19,14 @@
       </div>
     </details>
   </div>
+
+  <Loader v-if="showLoader" />
 </template>
 
 <script>
 import { ref, reactive, toRef } from 'vue'
 import { transactionsRef } from "../firebase"
+import Loader from "./Loader.vue"
 
 export default {
   name: "Transactions",
@@ -34,9 +37,14 @@ export default {
     }
   },
 
+  components: {
+    Loader
+  },
+
   setup(props) {
     const showTransactions = ref(false)
     let transactions = ref(null)
+    const showLoader = ref(false)
 
     // ********* Methods ********** //
     const toggleTransactions = () => {
@@ -46,20 +54,25 @@ export default {
     const handleTransactions = () => {
       let trans = []
 
+      // Show loader
+      showLoader.value = true
+
       transactionsRef.where("id", "==", props.currentUser.uid).orderBy("date", "desc").limit(10).get()
       .then(docs => {
         docs.forEach((doc) => {
           trans.push({...doc.data(), id: doc.id})          
         })
         transactions.value = trans
+        showLoader.value = false
       })
       .catch(e => {
         console.log(e)
+        showLoader.value = false
       })
       console.log(transactions)
     }
 
-    return { transactions, showTransactions, handleTransactions, toggleTransactions }
+    return { transactions, showTransactions, handleTransactions, toggleTransactions, showLoader }
   }
 }
 </script>

@@ -6,6 +6,7 @@
   <ErrorMsg v-show="transactionError.length" :errorMsg="transactionError" />
   <TransactionForm @transaction-event="handleTransaction" />
   <Transactions :currentUser="currentUser" />
+  <Loader v-if="showLoader" />
 </template>
 
 <script>
@@ -13,6 +14,7 @@ import Balance from "./Balance.vue"
 import TransactionForm from "./TransactionForm.vue"
 import Transactions from "./Transactions.vue"
 import ErrorMsg from "./ErrorMsg.vue"
+import Loader from "./Loader.vue"
 import { transactionsRef, timestamp, accountsRef, increment } from "../firebase"
 import { ref } from '@vue/reactivity'
 
@@ -32,15 +34,21 @@ export default {
     Balance,
     TransactionForm,
     Transactions,
-    ErrorMsg
+    ErrorMsg,
+    Loader
   },
 
   setup(props) {
     const transactionError = ref("")
+    const showLoader = ref(false)
 
     const handleTransaction = (transaction) => {
+      
       // Veriy the user has funds to transfer.
       if (props.userAccount.balance >= transaction.amount) {
+        // Show loader
+        showLoader.value = true
+
         accountsRef.doc(props.currentUser.uid).update({
           balance: increment(-transaction.amount)
         })
@@ -53,20 +61,21 @@ export default {
         })
         .then(() => {
           console.log(`Transaction success! Balance: ${props.userAccount.balance}`)
+          showLoader.value = false
         })
         .catch(e => {
           console.log(e)
+          // Show loader
+        showLoader.value = true
         })
 
       } else {
         transactionError.value = "Fondos no son sufucientes."
         setTimeout(() => {transactionError.value = ""}, 5000)
-      }
-
-      
+      }      
     }
 
-    return { transactionError, handleTransaction }
+    return { transactionError, handleTransaction, showLoader }
   }
 
 }
