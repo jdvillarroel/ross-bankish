@@ -70,7 +70,8 @@ export default {
       email: "",
       createdAt: null,
       userType: "",
-      balance: null
+      availableBalance: null,
+      postedBalance: null
     })
     const showLoader = ref(false)
 
@@ -94,7 +95,8 @@ export default {
             userAccount.firstName = account.data().firstName
             userAccount.lastName = account.data().lastName
             userAccount.email = account.data().email
-            userAccount.balance = account.data().balance
+            userAccount.availableBalance = account.data().availableBalance
+            userAccount.postedBalance = account.data().postedBalance
             userAccount.createdAt = account.data().createdAt.toDate()
             userAccount.userType = account.data().userType
 
@@ -119,7 +121,8 @@ export default {
           userAccount.firstName = ""
           userAccount.lastName = ""
           userAccount.email = ""
-          userAccount.balance = 0
+          userAccount.availableBalance = 0
+          userAccount.postedBalance = 0
           userAccount.userType = ""
           // stopAuthObserver()
         }
@@ -185,7 +188,8 @@ export default {
           email: userData.email,
           createdAt: timestamp(),
           userType: "regularUser",
-          balance: 0
+          availableBalance: 0,
+          postedBalance: 0
         })
       })
       .then(() => {

@@ -118,6 +118,23 @@ input:focus {
 	outline-color: rgba(53, 53, 53, 0.5);
 }
 
+.radio-wrap {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 2rem;
+	font-weight: 0.85rem;
+}
+
+.input-radio {
+	width: initial;
+	height: initial;
+	border: initial;
+	line-height: initial;
+	font-family: "Montserrat Alternates", sans-serif;
+	margin-right: 0.6rem;
+}
+
 .form-message {
 	font-size: 0.7rem;
 	margin-top: 0.2rem;
@@ -205,13 +222,18 @@ button[type="reset"] {
 }
 
 .balance-wrap h3 {
-	margin: 0.5em 0;
+	margin: 0.2em 0;
 }
 
 .balance-wrap p {
 	letter-spacing: 2px;
 	font-size: 0.9rem;
 	font-weight: 600;
+}
+
+.diff-balance {
+	color: rgb(85, 85, 85);
+	font-weight: 700;
 }
 
 /* **************** TRANSACTION FORM STYLES ******************* */
@@ -271,4 +293,12 @@ summary {
 
 summary::-webkit-details-marker {
 	display: none;
+}
+
+.send {
+	color: tomato;
+}
+
+.receive {
+	color: var(--color-primary);
 }

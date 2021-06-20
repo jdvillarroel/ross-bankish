@@ -14,7 +14,7 @@
       <div>
         <p>De: {{ transaction.from }}</p>
         <p>Para: {{ transaction.to }}</p>
-        <p>Monto: ${{ transaction.amount }}</p>
+        <p :class="{ send: transaction.type === 'send', receive: transaction.type === 'receive' }">Monto: ${{ transaction.amount }}</p>
         <p>Descripcion: {{ transaction.description }}</p>
       </div>
     </details>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { ref, reactive, toRef } from 'vue'
+import { ref } from 'vue'
 import { transactionsRef } from "../firebase"
 import Loader from "./Loader.vue"
 

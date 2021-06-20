@@ -21,10 +21,23 @@
       <label for="amount">Cantidad</label>
       <input type="number" min="0" step="0.01" id="amount" required v-model.number="amount">
     </div>
+
+    <div class="radio-wrap">
+      <div>
+        <input class="input-radio" type="radio" id="receive" value="receive" v-model="transactionType">
+        <label for="receive">Recibir</label>
+      </div>
+      <div>
+        <input class="input-radio" type="radio" id="send" value="send" checked v-model="transactionType">
+        <label for="send">Enviar</label>
+      </div>
+
+      
+    </div>
     
     <div class="form-row">
       <label for="description">Descripcion</label>
-      <textarea id="description" cols="30" rows="10" v-model="description"></textarea>
+      <textarea id="description" cols="30" rows="5" v-model="description"></textarea>
       <p class="error-message"></p>
     </div>
     
@@ -51,6 +64,7 @@ export default {
     const to = ref("")
     const amount = ref(null)
     const description = ref("")
+    const transactionType = ref("send")
     const showTransactionForm = ref(false)
     const transactionForm = ref(null)
 
@@ -61,7 +75,8 @@ export default {
         to: to.value,
         amount: parseFloat(amount.value),
         description: description.value,
-        status: "pending"
+        status: "pending",
+        type: transactionType.value
       }
     })
 
@@ -70,6 +85,7 @@ export default {
       console.log(to.value)
       console.log(amount.value)
       console.log(description.value)
+      console.log(transactionType.value)
 
       context.emit("transaction-event", transaction.value)
 
@@ -79,6 +95,7 @@ export default {
       to.value = ""
       amount.value = null
       description.value = ""
+      transactionType.value = "send"
       setTimeout(toggleForm, 800)
     }
 
@@ -95,7 +112,8 @@ export default {
       showTransactionForm,
       handleTransaction,
       toggleForm,
-      transactionForm
+      transactionForm,
+      transactionType
     }
   }
 }

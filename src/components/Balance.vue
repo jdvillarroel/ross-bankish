@@ -1,11 +1,13 @@
 <template>
   <div class="balance-wrap">
-    <h3>Balance Disponible</h3>
-    <p>VUSD: <em>${{ parseFloat(userAccount.balance.toFixed(2)) }}</em></p>
+    <h3>Resumen de Cuenta</h3>
+    <p>Saldo Actual: <em>${{ parseFloat(userAccount.postedBalance.toFixed(2)) }}</em></p>
+    <p>Saldo Disponible: <em :class="{ 'diff-balance': isDifferent }">${{ parseFloat(userAccount.availableBalance.toFixed(2)) }}</em></p>
   </div>
 </template>
 
 <script>
+import { computed, ref } from 'vue'
 
 export default {
   name: "Balance",
@@ -15,7 +17,13 @@ export default {
   },
 
   setup(props) {
-    
+    const isDifferent = computed(() => {
+      return props.userAccount.availableBalance !== props.userAccount.postedBalance
+    })
+
+
+
+    return { isDifferent }
   }
 }
 </script>

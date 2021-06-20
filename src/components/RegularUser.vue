@@ -43,14 +43,15 @@ export default {
     const showLoader = ref(false)
 
     const handleTransaction = (transaction) => {
+      let amount = transaction.type === "send" ? -transaction.amount : transaction.amount
       
       // Veriy the user has funds to transfer.
-      if (props.userAccount.balance >= transaction.amount) {
+      if (props.userAccount.availableBalance >= transaction.amount) {
         // Show loader
         showLoader.value = true
 
         accountsRef.doc(props.currentUser.uid).update({
-          balance: increment(-transaction.amount)
+          availableBalance: increment(amount)
         })
         .then(() => {
           return transactionsRef.add({
@@ -60,13 +61,14 @@ export default {
           })
         })
         .then(() => {
-          console.log(`Transaction success! Balance: ${props.userAccount.balance}`)
+          console.log(`Transaction success! Balance: ${props.userAccount.availableBalance}`)
           showLoader.value = false
+          transactionError.value = ""
         })
         .catch(e => {
           console.log(e)
-          // Show loader
-        showLoader.value = true
+          transactionError.value = e.message
+          showLoader.value = false
         })
 
       } else {
