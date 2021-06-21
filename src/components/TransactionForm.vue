@@ -30,9 +30,7 @@
       <div>
         <input class="input-radio" type="radio" id="send" value="send" checked v-model="transactionType">
         <label for="send">Enviar</label>
-      </div>
-
-      
+      </div>      
     </div>
     
     <div class="form-row">

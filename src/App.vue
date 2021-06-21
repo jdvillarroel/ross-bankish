@@ -84,7 +84,6 @@ export default {
            */
           currentUser.uid = user.uid
           currentUser.email = user.email
-          console.log(user)
 
           // Set the user type
           // userType.value = currentUser.uid === "sakjdksdjfsjdfk34rfds44" ? "adminUser" : "regularUser"

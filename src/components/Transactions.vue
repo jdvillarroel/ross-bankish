@@ -57,7 +57,7 @@ export default {
       // Show loader
       showLoader.value = true
 
-      transactionsRef.where("id", "==", props.currentUser.uid).orderBy("date", "desc").limit(10).get()
+      transactionsRef.where("uid", "==", props.currentUser.uid).orderBy("date", "desc").limit(10).get()
       .then(docs => {
         docs.forEach((doc) => {
           trans.push({...doc.data(), id: doc.id})          

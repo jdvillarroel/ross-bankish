@@ -4,7 +4,7 @@
       <h1 v-show="isAuth">Bienvenid@</h1>
       <p v-show="!isAuth">Por favor presione el icono de menu para ingresar</p>
       <RegularUser
-        v-if="isAuth && userType === 'regularUser'"
+        v-if="isAuth"
         :currentUser="currentUser"
         :userAccount="userAccount"
       />
@@ -18,6 +18,7 @@
 // @ is an alias to /src
 import {  ref } from "vue"
 import RegularUser from "../components/RegularUser.vue"
+import AdminUser from "../components/AdminUser.vue"
 
 export default {
   name: 'Home',
@@ -30,7 +31,8 @@ export default {
   },
 
   components: {
-    RegularUser
+    RegularUser,
+    AdminUser
   },
 
   setup(props, context) {

@@ -3,8 +3,9 @@
     <p class="user">Usuario: {{ currentUser.email }}</p>
   </div>
   <Balance :userAccount="userAccount" />
+  <button v-if="userAccount.userType === 'adminUser'" @click="updateBalance">Actualizar Saldo</button>
   <ErrorMsg v-show="transactionError.length" :errorMsg="transactionError" />
-  <TransactionForm @transaction-event="handleTransaction" />
+  <TransactionForm v-if="userAccount.userType === 'regularUser'" @transaction-event="handleTransaction" />
   <Transactions :currentUser="currentUser" />
   <Loader v-if="showLoader" />
 </template>
@@ -56,7 +57,7 @@ export default {
         .then(() => {
           return transactionsRef.add({
             ...transaction,
-            id: props.currentUser.uid,
+            uid: props.currentUser.uid,
             date: timestamp()
           })
         })
@@ -77,7 +78,12 @@ export default {
       }      
     }
 
-    return { transactionError, handleTransaction, showLoader }
+    // Update balance for admin user account.
+    const updateBalance = () => {
+      console.log("updated...")
+    }
+
+    return { transactionError, handleTransaction, showLoader, updateBalance }
   }
 
 }
