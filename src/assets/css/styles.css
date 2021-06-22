@@ -280,7 +280,7 @@ button[type="reset"] {
 .transaction-details {
 	margin: 0.5rem auto;
 	max-width: 25rem;
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 }
 
 summary {
@@ -289,6 +289,10 @@ summary {
 	border-radius: 5px;
 	padding: 0.3rem;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	font-size: 0.8rem;
 }
 
 summary::-webkit-details-marker {
@@ -301,4 +305,17 @@ summary::-webkit-details-marker {
 
 .receive {
 	color: var(--color-primary);
+}
+
+.confirm {
+	border: none;
+	padding: 0;
+	margin: 0 0 0 1rem;
+}
+
+.reject {
+	border: none;
+	padding: 0;
+	margin: 0 0 0 0.5rem;
+	color: tomato;
 }

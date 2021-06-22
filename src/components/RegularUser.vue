@@ -6,7 +6,7 @@
   <button v-if="userAccount.userType === 'adminUser'" @click="updateBalance">Actualizar Saldo</button>
   <ErrorMsg v-show="transactionError.length" :errorMsg="transactionError" />
   <TransactionForm v-if="userAccount.userType === 'regularUser'" @transaction-event="handleTransaction" />
-  <Transactions :currentUser="currentUser" />
+  <Transactions :currentUser="currentUser" :userAccount="userAccount" />
   <Loader v-if="showLoader" />
 </template>
 
@@ -80,7 +80,29 @@ export default {
 
     // Update balance for admin user account.
     const updateBalance = () => {
-      console.log("updated...")
+      let availableBalance = 0
+      let postedBalance = 0
+
+      accountsRef.get()
+      .then(docs => {
+        docs.forEach(doc => {
+          if (props.currentUser.uid !== doc.id) {
+            // Calculate balances for admin user
+            availableBalance += doc.data().availableBalance
+            postedBalance += doc.data().postedBalance
+          }
+        })
+
+        // Update balances in database
+        return accountsRef.doc(props.currentUser.uid).update({
+          availableBalance: availableBalance,
+          postedBalance: postedBalance
+        })
+      })
+      .then(console.log("Balance updated successfully!"))
+      .catch(e => {
+        console.log(e)
+      })
     }
 
     return { transactionError, handleTransaction, showLoader, updateBalance }
