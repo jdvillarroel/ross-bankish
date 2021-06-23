@@ -45,21 +45,43 @@ export default {
 
     const handleTransaction = (transaction) => {
       let amount = transaction.type === "send" ? -transaction.amount : transaction.amount
-      
-      // Veriy the user has funds to transfer.
-      if (props.userAccount.availableBalance >= transaction.amount) {
-        // Show loader
-        showLoader.value = true
 
-        accountsRef.doc(props.currentUser.uid).update({
-          availableBalance: increment(amount)
-        })
-        .then(() => {
-          return transactionsRef.add({
-            ...transaction,
-            uid: props.currentUser.uid,
-            date: timestamp()
+      if (transaction.type === "send") {
+        // Veriy the user has funds to transfer.
+        if (props.userAccount.availableBalance >= transaction.amount) {
+          // Show loader
+          showLoader.value = true
+
+          accountsRef.doc(props.currentUser.uid).update({
+            availableBalance: increment(amount)
           })
+          .then(() => {
+            return transactionsRef.add({
+              ...transaction,
+              uid: props.currentUser.uid,
+              date: timestamp()
+            })
+          })
+          .then(() => {
+            console.log(`Transaction success! Balance: ${props.userAccount.availableBalance}`)
+            showLoader.value = false
+            transactionError.value = ""
+          })
+          .catch(e => {
+            console.log(e)
+            transactionError.value = e.message
+            showLoader.value = false
+          })
+
+        } else {
+          transactionError.value = "Fondos no son sufucientes."
+          setTimeout(() => {transactionError.value = ""}, 5000)
+        } 
+      } else if (transaction.type === "receive") {
+        transactionsRef.add({
+          ...transaction,
+          uid: props.currentUser.uid,
+          date: timestamp()
         })
         .then(() => {
           console.log(`Transaction success! Balance: ${props.userAccount.availableBalance}`)
@@ -67,15 +89,16 @@ export default {
           transactionError.value = ""
         })
         .catch(e => {
-          console.log(e)
-          transactionError.value = e.message
-          showLoader.value = false
+            console.log(e)
+            transactionError.value = e.message
+            showLoader.value = false
         })
-
+        
       } else {
-        transactionError.value = "Fondos no son sufucientes."
-        setTimeout(() => {transactionError.value = ""}, 5000)
-      }      
+        console.log("Transaction not possible")
+      }
+      
+           
     }
 
     // Update balance for admin user account.

@@ -23,14 +23,15 @@
           >
         </div>
 
-        <div v-if="userAccount.userType === 'adminUser'">
-          <button class="reject">
+        <div v-if="userAccount.userType === 'adminUser' && transaction.status === 'pending'">
+          <button @click="transactionReject(transaction)" class="reject">
             <span class="material-icons">highlight_off</span>
           </button>
-          <button class="confirm">
+          <button @click="transactionConfirm(transaction)" class="confirm">
             <span class="material-icons">check_circle_outline</span>
           </button>
         </div>
+        <div v-if="userAccount.userType === 'adminUser' && transaction.status !== 'pending'"><p>{{ transaction.status }}</p></div>
       </summary>
       <div>
         <p>De: {{ transaction.from }}</p>
@@ -53,7 +54,7 @@
 
 <script>
 import { ref } from "vue";
-import { transactionsRef } from "../firebase";
+import { accountsRef, transactionsRef, increment } from "../firebase";
 import Loader from "./Loader.vue";
 
 export default {
@@ -127,12 +128,99 @@ export default {
       }
     };
 
+    // Teransactions is confirmed by admin
+    const transactionConfirm = (transaction) => {
+      showLoader.value = true;
+
+      if (transaction.type === "send") {
+        transactionsRef.doc(transaction.id).update({
+          status: "confirmed"
+        })
+        .then(() => {
+          showLoader.value = false;
+          console.log(`Transaction ${transaction.id} confirmed!!!`)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+
+      } else if (transaction.type === "receive") {
+
+        // Update balance in account and then update transaction status in transactions
+        accountsRef.doc(transaction.uid).update({
+          availableBalance: increment(transaction.amount)
+        })
+        .then(() => {
+          return transactionsRef.doc(transaction.id).update({
+            status: "confirmed"
+          })
+        })
+        .then(() => {
+          showLoader.value = false;
+          console.log(`Transaction ${transaction.id} confirmed!!!`)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+      } else {
+        showLoader.value = false;
+        console.log("Operation not possible.")
+      }
+
+      handleTransactions()
+    }
+
+    // Transaction is rejected by admin
+    const transactionReject = (transaction) => {
+      // Show loader
+      showLoader.value = true;
+
+      if (transaction.type === "send") {
+        // Update balance in account and then update transaction status in transactions
+        accountsRef.doc(transaction.uid).update({
+          availableBalance: increment(transaction.amount)
+        })
+        .then(() => {
+          return transactionsRef.doc(transaction.id).update({
+            status: "rejected"
+          })
+        })
+        .then(() => {
+          showLoader.value = false;
+          console.log(`Transaction ${transaction.id} rejected!!!`)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+
+      } else if (transaction.type === "receive") {
+        transactionsRef.doc(transaction.id).update({
+          status: "rejected"
+        })
+        .then(() => {
+          showLoader.value = false;
+          console.log(`Transaction ${transaction.id} rejected!!!`)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+
+      } else {
+        showLoader.value = false;
+        console.log("Operation not possible.")
+      }
+
+      handleTransactions()
+    }
+
     return {
       transactions,
       showTransactions,
       handleTransactions,
       toggleTransactions,
       showLoader,
+      transactionConfirm,
+      transactionReject
     };
   },
 };
