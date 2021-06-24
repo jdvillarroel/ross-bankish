@@ -77,6 +77,7 @@ export default {
     const showTransactions = ref(false);
     let transactions = ref(null);
     const showLoader = ref(false);
+    const stopTransactionsObserver = null;
 
     // ********* Methods ********** //
     const toggleTransactions = () => {
@@ -139,6 +140,7 @@ export default {
         .then(() => {
           showLoader.value = false;
           console.log(`Transaction ${transaction.id} confirmed!!!`)
+          handleTransactions()
         })
         .catch(e => {
           console.log(e)
@@ -158,6 +160,7 @@ export default {
         .then(() => {
           showLoader.value = false;
           console.log(`Transaction ${transaction.id} confirmed!!!`)
+          handleTransactions()
         })
         .catch(e => {
           console.log(e)
@@ -166,8 +169,6 @@ export default {
         showLoader.value = false;
         console.log("Operation not possible.")
       }
-
-      handleTransactions()
     }
 
     // Transaction is rejected by admin
@@ -188,6 +189,7 @@ export default {
         .then(() => {
           showLoader.value = false;
           console.log(`Transaction ${transaction.id} rejected!!!`)
+          handleTransactions()
         })
         .catch(e => {
           console.log(e)
@@ -200,6 +202,7 @@ export default {
         .then(() => {
           showLoader.value = false;
           console.log(`Transaction ${transaction.id} rejected!!!`)
+          handleTransactions()
         })
         .catch(e => {
           console.log(e)
@@ -209,8 +212,6 @@ export default {
         showLoader.value = false;
         console.log("Operation not possible.")
       }
-
-      handleTransactions()
     }
 
     return {
