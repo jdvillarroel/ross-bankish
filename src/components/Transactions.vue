@@ -34,17 +34,30 @@
         <div v-if="userAccount.userType === 'adminUser' && transaction.status !== 'pending'"><p>{{ transaction.status }}</p></div>
       </summary>
       <div>
-        <p>De: {{ transaction.from }}</p>
-        <p>Para: {{ transaction.to }}</p>
-        <p
-          :class="{
-            send: transaction.type === 'send',
-            receive: transaction.type === 'receive',
-          }"
-        >
+        <div class="trans-details" @click="doCopy(transaction.from)">
+          <p>De: {{ transaction.from }}</p>
+          <span class="material-icons">content_copy</span>
+        </div>
+        <div class="trans-details" @click="doCopy(transaction.to)">
+          <p>Para: {{ transaction.to }}</p>
+          <span class="material-icons">content_copy</span>
+        </div>
+        <div class="trans-details" @click="doCopy(transaction.amount)">
+          <p
+            :class="{
+              send: transaction.type === 'send',
+              receive: transaction.type === 'receive',
+            }"
+          >
           Monto: ${{ transaction.amount }}
-        </p>
-        <p>Descripcion: {{ transaction.description }}</p>
+          </p>
+          <span class="material-icons">content_copy</span>
+        </div>
+        <div class="trans-details" @click="doCopy(transaction.description)">
+          <p>Descripcion: {{ transaction.description }}</p>
+          <span class="material-icons">content_copy</span>
+        </div>        
+        
       </div>
     </details>
   </div>
@@ -54,6 +67,7 @@
 
 <script>
 import { ref } from "vue";
+import { copyText } from 'vue3-clipboard'
 import { accountsRef, transactionsRef, increment } from "../firebase";
 import Loader from "./Loader.vue";
 
@@ -214,6 +228,19 @@ export default {
       }
     }
 
+    // Copy text to clipboard
+    const doCopy = (data) => {
+      copyText(data, undefined, (error, event) => {
+        if (error) {
+          alert('Can not copy')
+          console.log(error)
+        } else {
+          alert(`Copied: ${data}`)
+          console.log(event)
+        }
+      })
+    }
+
     return {
       transactions,
       showTransactions,
@@ -221,7 +248,8 @@ export default {
       toggleTransactions,
       showLoader,
       transactionConfirm,
-      transactionReject
+      transactionReject,
+      doCopy
     };
   },
 };
